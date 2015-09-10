@@ -2,6 +2,7 @@
 from flask import Flask, jsonify
 from flask import abort
 from flask import make_response
+from flask import request
 
 app = Flask(__name__)
 
@@ -37,6 +38,21 @@ def get_task(task_id):
 @app.errorhandler(404)
 def not_found(error):
     return make_response(jsonify({'error': 'Not found'}), 404)
+
+# inserting new item in the database list
+@add.route('/todo/api/v1.0/tasks', methods=['POST'])
+def create_task():
+    if not request.json or not 'title' in request.json:
+        abort(404)
+    task = {
+        'id': tasks[-1]['id'] + 1,
+        'title': request.json['title'],
+        'description': request.json.get('description', ""),
+        'done': False
+    }
+    tasks.append(task)
+    return jsonify({'task':task}), 201
+
 
 if __name__ == '__main__':
     app.run(debug=True)
