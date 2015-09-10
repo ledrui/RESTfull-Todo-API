@@ -40,7 +40,7 @@ def not_found(error):
     return make_response(jsonify({'error': 'Not found'}), 404)
 
 # inserting new item in the database list
-@add.route('/todo/api/v1.0/tasks', methods=['POST'])
+@app.route('/todo/api/v1.0/tasks', methods=['POST'])
 def create_task():
     if not request.json or not 'title' in request.json:
         abort(400)
