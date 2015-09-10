@@ -43,7 +43,7 @@ def not_found(error):
 @add.route('/todo/api/v1.0/tasks', methods=['POST'])
 def create_task():
     if not request.json or not 'title' in request.json:
-        abort(404)
+        abort(400)
     task = {
         'id': tasks[-1]['id'] + 1,
         'title': request.json['title'],
