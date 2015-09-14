@@ -22,8 +22,25 @@ tasks = [
     }
 ]
 
+# Securing the app
+from flask.ext.httpauth import HTTPBasicAuth
+auth = HTTPBasicAuth()
+
+@auth.get_password
+def get_password(username):
+    """ Callback function used to obtain the password of a given user """
+    if username == 'zack':
+        return 'python'
+    return None
+
+@auth.error_handler
+def unauthorized():
+    """ Callback function used to send unauthorized error code """
+    return make_response(jsonify({'error': 'Unauthorized'}), 401)
+
 # get the entire database
 @app.route('/todo/api/v1.0/tasks', methods=['GET'])
+@auth.login_required
 def get_tasks():
     return jsonify({'tasks': [make_public_task(task) for task in tasks]})
 
@@ -91,6 +108,7 @@ def make_public_task(task):
             new_task[field] = task[field]
             
     return new_task
+
         
         
 if __name__ == '__main__':
