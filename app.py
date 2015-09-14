@@ -36,7 +36,7 @@ def get_password(username):
 @auth.error_handler
 def unauthorized():
     """ Callback function used to send unauthorized error code """
-    return make_response(jsonify({'error': 'Unauthorized'}), 401)
+    return make_response(jsonify({'error': 'Unauthorized'}), 403)
 
 # get the entire database
 @app.route('/todo/api/v1.0/tasks', methods=['GET'])
